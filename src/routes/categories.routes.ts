@@ -1,22 +1,18 @@
 import { Router } from 'express'
 import {CategoryRepository} from "../repositories/CategoryRepository";
+import {CreateCategoryService} from "../services/CreateCategoryService";
 
 
 const categoriesRoutes = Router();
-const categoryRepository = new CategoryRepository()
-
+const categoryRepository = new CategoryRepository() // new PostgresCategoryRepository
 
 
 categoriesRoutes.post('/', (request, response) => {
     const { name, description  } = request.body
 
-    const categoryAlreadyExists = categoryRepository.findbByName(name);
+    const createCategoryService = new CreateCategoryService(categoryRepository);
 
-    if (categoryAlreadyExists) {
-        return response.status(400).json({"message": "Category already exists!"})
-    }
-
-    categoryRepository.create({name, description})
+    createCategoryService.execute({name, description})
 
     response.status(201).send()
 })
