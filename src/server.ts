@@ -1,16 +1,10 @@
 import express, {response} from 'express';
+import {categoriesRoutes} from "./routes/categories.routes";
 
 const app = express();
 
 app.use(express.json());
 
-app.get('/', (resquest, response) => {
-    return response.json({message: 'Hello!'});
-});
-
-app.post('/', (resquest, response) => {
-    const { name } = resquest.body;
-    return response.json({message: `O Curso é ${name}!`});
-})
+app.use(categoriesRoutes)
 
 app.listen(3333, () => console.log('Server is running on port 3333'));
